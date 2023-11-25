@@ -6,6 +6,7 @@ import { OrganizerModule } from './organizer/organizer.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolModule } from './rol/rol.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { RolModule } from './rol/rol.module';
     OrganizerModule,
     UserModule,
     RolModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],

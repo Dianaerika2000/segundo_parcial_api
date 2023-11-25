@@ -1,0 +1,33 @@
+import { Organizer } from "src/organizer/entities/organizer.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity()
+export class Events {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
+
+  @Column({ type: 'date' })
+  date: Date;
+
+  @Column()
+  time: string;
+
+  @Column()
+  address: string;
+
+  @Column({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP'})
+  updatedAt: Date;
+
+  @ManyToOne(() => Organizer, (organizer) => organizer.events)
+  @JoinColumn({ name: 'organizer_id' })
+  organizer: Organizer;
+}

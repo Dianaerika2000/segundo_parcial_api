@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrganizerDto } from './dto/create-organizer.dto';
 import { UpdateOrganizerDto } from './dto/update-organizer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organizer } from './entities/organizer.entity';
 import { Repository } from 'typeorm';
 import { RolService } from '../rol/rol.service';
+import { Events } from 'src/event/entities/event.entity';
 
 @Injectable()
 export class OrganizerService {
@@ -34,7 +35,7 @@ export class OrganizerService {
     const organizer = await this.organizerRepository.findOneBy({ id });
     
     if (!organizer) {
-      throw new Error('Organizer not found');
+      throw new NotFoundException(`Organizer with ID ${id} not found`);
     }
 
     return organizer;
@@ -46,5 +47,19 @@ export class OrganizerService {
 
   remove(id: number) {
     return `This action removes a #${id} organizer`;
+  }
+
+    async getEventsForOrganizer(organizerId: number): Promise<Events[]> {
+    const organizer = await this.organizerRepository
+      .createQueryBuilder('organizer')
+      .leftJoinAndSelect('organizer.events', 'event')
+      .where('organizer.id = :id', { id: organizerId })
+      .getOne();
+
+    if (!organizer) {
+      throw new NotFoundException(`Organizer with ID ${organizerId} not found`);
+    }
+
+    return organizer.events;
   }
 }

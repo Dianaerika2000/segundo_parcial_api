@@ -31,4 +31,9 @@ export class OrganizerController {
   remove(@Param('id') id: string) {
     return this.organizerService.remove(+id);
   }
+
+  @Get(':id/events')
+  getEventsForOrganizer(@Param('id', ParseIntPipe) id: number) {
+    return this.organizerService.getEventsForOrganizer(id);
+  }
 }
