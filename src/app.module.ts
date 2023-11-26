@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolModule } from './rol/rol.module';
 import { EventModule } from './event/event.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { EventModule } from './event/event.module';
     UserModule,
     RolModule,
     EventModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

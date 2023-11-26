@@ -4,6 +4,7 @@ import { EventController } from './event.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Events } from './entities/event.entity';
 import { OrganizerModule } from 'src/organizer/organizer.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { OrganizerModule } from 'src/organizer/organizer.module';
       Events,
     ]),
     OrganizerModule,
+    MailModule,
   ],
   controllers: [EventController],
   providers: [EventService],

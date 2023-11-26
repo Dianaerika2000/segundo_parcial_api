@@ -5,16 +5,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrganizerService } from '../organizer/organizer.service';
 import { Events } from './entities/event.entity';
+import { MailService } from 'src/mail/mail.service';
+import { People } from './interfaces/people.interface';
+import { DataEvent } from './interfaces/event.interface';
 @Injectable()
 export class EventService {
   constructor(
     @InjectRepository(Events)
     private readonly eventRepository: Repository<Events>,
     private organizerService: OrganizerService,
+    private mailService: MailService,
   ) {}
 
   async create(createEventDto: CreateEventDto) {
-    const { organizerId, ...eventData } = createEventDto;
+    const { organizerId, people, ...eventData } = createEventDto;
   
     const organizer = await this.organizerService.findOne(organizerId);
   
@@ -22,8 +26,16 @@ export class EventService {
       ...eventData, 
       organizer: organizer, 
     });
-  
-    return await this.eventRepository.save(event);
+
+    await this.eventRepository.save(event);
+
+    await this.sendInvitationToPeople(people, event);
+    
+    return {
+      message: 'Event created successfully',
+      ...event,
+      organizer: organizer,
+    };
   }
 
   async getEventsForOrganizer(organizerId: number): Promise<Events[]> {
@@ -54,5 +66,11 @@ export class EventService {
 
   remove(id: number) {
     return `This action removes a #${id} event`;
+  }
+
+  private async sendInvitationToPeople(people: People[], event : Events){
+    people.map((person) => {
+      this.mailService.sendInvitation(person.email, person.cant, event);
+    })
   }
 }
