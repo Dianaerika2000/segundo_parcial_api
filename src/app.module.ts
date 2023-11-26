@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RolModule } from './rol/rol.module';
 import { EventModule } from './event/event.module';
 import { MailModule } from './mail/mail.module';
+import { PhotographerModule } from './photographer/photographer.module';
+import { AwsRekognitionModule } from './aws-rekognition/aws-rekognition.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { MailModule } from './mail/mail.module';
     RolModule,
     EventModule,
     MailModule,
+    PhotographerModule,
+    AwsRekognitionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

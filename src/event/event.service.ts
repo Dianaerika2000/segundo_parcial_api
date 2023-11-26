@@ -8,12 +8,18 @@ import { Events } from './entities/event.entity';
 import { MailService } from 'src/mail/mail.service';
 import { People } from './interfaces/people.interface';
 import { DataEvent } from './interfaces/event.interface';
+import { PhotographerxEvent } from 'src/photographer/entities/PhotographerxEvent.entity';
 @Injectable()
 export class EventService {
   constructor(
     @InjectRepository(Events)
     private readonly eventRepository: Repository<Events>,
+
+    @InjectRepository(PhotographerxEvent)
+    private readonly photographerxEventRepository: Repository<PhotographerxEvent>,
+    
     private organizerService: OrganizerService,
+    
     private mailService: MailService,
   ) {}
 
@@ -73,4 +79,43 @@ export class EventService {
       this.mailService.sendInvitation(person.email, person.cant, event);
     })
   }
+
+  async getPhotographersForEvent(eventId: number): Promise<any[]> {
+    const photographers = await this.photographerxEventRepository.find({
+      where: {
+        event: { id: eventId },
+      },
+      relations: ['photographer'],
+    });
+
+    const onlyPhotographers = photographers.map((photographer) => {
+      return photographer.photographer
+    });
+
+    return onlyPhotographers;
+  }
+
+  async uploadImage(eventId: number, photographerId: number,  image: Express.Multer.File) {
+    const photographerxEvent = await this.photographerxEventRepository.findOne({
+      where: {
+        event: { id: eventId },
+        photographer: { id: photographerId },
+      },
+    });
+
+    if (!photographerxEvent) {
+      throw new NotFoundException('Photographer not found');
+    }
+
+    // photographerxEvent.photographies = image.filename;
+    await this.photographerxEventRepository.save(photographerxEvent);
+
+    return photographerxEvent;
+  }
+
+
+
+  
+  
+
 }

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('event')
 export class EventController {
@@ -35,5 +36,19 @@ export class EventController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.eventService.remove(+id);
+  }
+
+  @Get(':eventId/photographers')
+  getPhotographersForEvent(@Param('eventId') eventId: number) {
+    return this.eventService.getPhotographersForEvent(eventId);
+  }
+
+  @Post(':eventId/photographers/:photographerId/images')
+  @UseInterceptors(FileInterceptor('photo'))
+  uploadImage(
+    @UploadedFile() photo: Express.Multer.File,
+    @Param('eventId')eventId: number,
+    @Param('photographerId')photographerId: number,) {
+    return this.eventService.uploadImage(eventId, photographerId, photo);
   }
 }

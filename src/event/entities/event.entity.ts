@@ -1,5 +1,6 @@
 import { Organizer } from "src/organizer/entities/organizer.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { PhotographerxEvent } from "src/photographer/entities/PhotographerxEvent.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Events {
@@ -30,4 +31,7 @@ export class Events {
   @ManyToOne(() => Organizer, (organizer) => organizer.events)
   @JoinColumn({ name: 'organizer_id' })
   organizer: Organizer;
+
+  @OneToMany(() =>  PhotographerxEvent, (photographerxEvent) => photographerxEvent.event)
+  photographerxEvents: PhotographerxEvent[];
 }

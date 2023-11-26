@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRolDto } from './dto/create-rol.dto';
@@ -24,7 +24,7 @@ export class RolService {
   async findOne(id: number) {
     const rol = await this.rolRepository.findOneBy({ id });
     if (!rol) {
-      throw new Error(`Rol #${id} not found`);
+      throw new NotFoundException(`Rol #${id} not found`);
     }
 
     return rol;

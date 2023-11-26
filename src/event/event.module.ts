@@ -5,14 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Events } from './entities/event.entity';
 import { OrganizerModule } from 'src/organizer/organizer.module';
 import { MailModule } from 'src/mail/mail.module';
+import { PhotographerModule } from 'src/photographer/photographer.module';
+import { Photography } from './entities/image.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Events,
+      Photography,
     ]),
     OrganizerModule,
     MailModule,
+    PhotographerModule,
   ],
   controllers: [EventController],
   providers: [EventService],
