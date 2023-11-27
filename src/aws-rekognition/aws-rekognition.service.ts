@@ -117,7 +117,7 @@ export class AwsRekognitionService {
         Bytes: photography
       },
       MaxFaces: 20,
-      QualityFilter: 'MEDIUM'
+      QualityFilter: 'NONE'
     }))
 
     const faceIds = this.getFaceIdsFromSearchFacesResult(searchFacesResult)
@@ -129,6 +129,7 @@ export class AwsRekognitionService {
         message: 'Successfully found users by photography.',
         users: faceIds
       }
+      // return searchFacesResult;
     } else {
       return {
         error: "Couldn't find users by photo."
