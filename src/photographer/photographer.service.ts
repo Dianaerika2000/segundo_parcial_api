@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePhotographerDto } from './dto/create-photographer.dto';
 import { UpdatePhotographerDto } from './dto/update-photographer.dto';
 import { Photographer } from './entities/photographer.entity';
@@ -35,8 +35,12 @@ export class PhotographerService {
     return await this.photographerRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} photographer`;
+  async findOne(id: number) {
+    const photographer = await this.photographerRepository.findOneBy({ id });
+    if (!photographer) {
+      throw new NotFoundException(`Photographer with ID ${id} not found`);
+    }
+    return photographer;
   }
 
   update(id: number, updatePhotographerDto: UpdatePhotographerDto) {
