@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Guest } from './entities/guest.entity';
 import { Repository } from 'typeorm';
 import { AwsRekognitionService } from '../aws-rekognition/aws-rekognition.service';
+import { QrService } from '../qr/qr.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GuestService {
@@ -14,14 +16,16 @@ export class GuestService {
     private  guestRepository: Repository<Guest>,
     private readonly rolService: RolService,
     private awsRekognitionService: AwsRekognitionService,
+    private readonly qrService: QrService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createGuestDto: CreateGuestDto, file: Express.Multer.File) {
     const { rolId, eventId } = createGuestDto;
     const rol = await this.rolService.findOne(rolId);
 
-    const collectionName = `evento_${eventId}`;
-    const indexFaceResult = await this.awsRekognitionService.indexFaceToCollection(file.buffer, collectionName);
+    // const collectionName = `evento_${eventId}`;
+    const indexFaceResult = await this.awsRekognitionService.indexFaceToCollection(file.buffer);
     
     if (indexFaceResult.error) {
       throw new BadRequestException('Error indexing face');
@@ -34,7 +38,17 @@ export class GuestService {
       rol: rol,
     });
 
-    return this.guestRepository.save(guest);
+    const domainFront = this.configService.get('FRONTEND_DOMAIN');
+    const url = `${domainFront}/event/invitation`;
+    
+    const qrInvitacion = await this.qrService.generateQrCode(url)
+
+    await this.guestRepository.save(guest);
+    
+    return {
+      ...guest,
+      qrInvitacion
+    }
   }
 
   findAll() {

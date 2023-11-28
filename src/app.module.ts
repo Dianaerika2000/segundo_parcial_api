@@ -11,6 +11,7 @@ import { MailModule } from './mail/mail.module';
 import { PhotographerModule } from './photographer/photographer.module';
 import { AwsRekognitionModule } from './aws-rekognition/aws-rekognition.module';
 import { GuestModule } from './guest/guest.module';
+import { QrModule } from './qr/qr.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { GuestModule } from './guest/guest.module';
     PhotographerModule,
     AwsRekognitionModule,
     GuestModule,
+    QrModule,
   ],
   controllers: [AppController],
   providers: [AppService],

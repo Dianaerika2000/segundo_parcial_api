@@ -29,7 +29,7 @@ export class AwsRekognitionService {
     }
   }
 
-  async indexFaceToCollection(profilePhoto: Buffer, collectionName: string) {
+  async indexFaceToCollection(profilePhoto: Buffer, collectionName: string = "evento_prueba") {
     // Step 1: Connects to AWS Rekognition service
     const rekognitionClient = new RekognitionClient({
       region: this.configService.get('AWS_REGION'),

@@ -23,7 +23,7 @@ export class Events {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   collection: string;
 
   @Column({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
@@ -35,6 +35,7 @@ export class Events {
   @BeforeInsert()
   collectionName() {
     const collectionName = `evento_${this.id}`;
+    this.collection = collectionName;
   }
 
   @ManyToOne(() => Organizer, (organizer) => organizer.events)

@@ -50,7 +50,7 @@ export class EventService {
   
     const events = await this.eventRepository.find({
       where: {
-        organizer: organizer,
+        organizer: { id: organizer.id },  // Asumiendo que `id` es la clave primaria de Organizer
       },
     });
     console.log('Events:', events);
