@@ -5,5 +5,6 @@ import { AwsRekognitionController } from './aws-rekognition.controller';
 @Module({
   controllers: [AwsRekognitionController],
   providers: [AwsRekognitionService],
+  exports: [AwsRekognitionService],
 })
 export class AwsRekognitionModule {}

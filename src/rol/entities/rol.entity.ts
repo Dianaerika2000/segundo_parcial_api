@@ -1,3 +1,4 @@
+import { Guest } from 'src/guest/entities/guest.entity';
 import { Organizer } from 'src/organizer/entities/organizer.entity';
 import { Photographer } from 'src/photographer/entities/photographer.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
@@ -17,4 +18,7 @@ export class Rol {
 
   @OneToMany(() => Photographer, (photographer) => photographer.rol)
   photographers: Photographer[];
+
+  @OneToMany(() => Guest, (guest) => guest.rol)
+  guests: Guest[];
 }

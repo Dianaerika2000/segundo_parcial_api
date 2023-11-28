@@ -10,6 +10,7 @@ import { EventModule } from './event/event.module';
 import { MailModule } from './mail/mail.module';
 import { PhotographerModule } from './photographer/photographer.module';
 import { AwsRekognitionModule } from './aws-rekognition/aws-rekognition.module';
+import { GuestModule } from './guest/guest.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AwsRekognitionModule } from './aws-rekognition/aws-rekognition.module';
     MailModule,
     PhotographerModule,
     AwsRekognitionModule,
+    GuestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
