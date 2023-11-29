@@ -4,7 +4,7 @@ import { Events } from "../../event/entities/event.entity";
 import { Photography } from "../../event/entities/image.entity";
 
 @Entity('photographer_event')
-export class PhotographerxEvent {
+export class PhotographerEvent {
   @PrimaryGeneratedColumn()
   id: number;
 

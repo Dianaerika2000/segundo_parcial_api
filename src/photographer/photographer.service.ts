@@ -5,7 +5,7 @@ import { Photographer } from './entities/photographer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RolService } from 'src/rol/rol.service';
-import { PhotographerxEvent } from './entities/photographerxevent.entity';
+import { PhotographerEvent } from './entities/photographerxevent.entity';
 
 @Injectable()
 export class PhotographerService {
@@ -13,8 +13,8 @@ export class PhotographerService {
     @InjectRepository(Photographer)
     private readonly photographerRepository: Repository<Photographer>,
 
-    @InjectRepository(PhotographerxEvent)
-    private readonly photographerxEventRepository: Repository<PhotographerxEvent>,
+    @InjectRepository(PhotographerEvent)
+    private readonly photographerxEventRepository: Repository<PhotographerEvent>,
 
     private readonly rolService: RolService,
   ) {}
@@ -62,7 +62,7 @@ export class PhotographerService {
     return await this.photographerxEventRepository.save(photographerxEvent);
   }
 
-  async getEventsForPhotographer(photographerId: number): Promise<PhotographerxEvent[]> {
+  async getEventsForPhotographer(photographerId: number): Promise<PhotographerEvent[]> {
     const events = await this.photographerxEventRepository.find({
       where: {
         photographer: { id: photographerId },
@@ -84,7 +84,7 @@ export class PhotographerService {
     return await this.photographerxEventRepository.save(photographerxEvent);
   }
 
-  async getPhotographersForEvent(eventId: number): Promise<PhotographerxEvent[]> {
+  async getPhotographersForEvent(eventId: number): Promise<PhotographerEvent[]> {
     const photographers = await this.photographerxEventRepository.find({
       where: {
         event: { id: eventId },

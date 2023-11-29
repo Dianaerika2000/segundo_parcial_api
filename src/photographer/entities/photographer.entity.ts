@@ -1,7 +1,7 @@
 import { Rol } from "src/rol/entities/rol.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { PhotographerxEvent } from "./photographerxevent.entity";
+import { PhotographerEvent } from "./photographerxevent.entity";
 
 @Entity()
 export class Photographer extends User {
@@ -12,7 +12,7 @@ export class Photographer extends User {
   @JoinColumn({ name: 'rol_id'})
   rol: Rol;
 
-  @OneToMany(() =>  PhotographerxEvent, (photographerxEvent) => photographerxEvent.photographer)
-  photographerxEvents: PhotographerxEvent[];
+  @OneToMany(() =>  PhotographerEvent, (photographerxEvent) => photographerxEvent.photographer)
+  photographerxEvents: PhotographerEvent[];
 }
 

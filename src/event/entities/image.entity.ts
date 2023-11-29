@@ -1,4 +1,4 @@
-import { PhotographerxEvent } from "src/photographer/entities/photographerxevent.entity";
+import { PhotographerEvent } from "src/photographer/entities/photographerxevent.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('photography')
@@ -18,6 +18,6 @@ export class Photography {
   @Column({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP'})
   updatedAt: Date;
 
-  @ManyToOne(() => PhotographerxEvent, (event) => event.photographies)
-  photographerxEvent: PhotographerxEvent;
+  @ManyToOne(() => PhotographerEvent, (event) => event.photographies)
+  photographerxEvent: PhotographerEvent;
 }
