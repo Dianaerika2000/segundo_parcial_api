@@ -1,4 +1,4 @@
-import { PhotographerxEvent } from "src/photographer/entities/PhotographerxEvent.entity";
+import { PhotographerxEvent } from "src/photographer/entities/photographerxevent.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('photography')

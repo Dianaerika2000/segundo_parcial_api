@@ -1,6 +1,6 @@
 import { GuestxEvent } from "src/guest/entities/guestxEvent.entity";
 import { Organizer } from "src/organizer/entities/organizer.entity";
-import { PhotographerxEvent } from "src/photographer/entities/PhotographerxEvent.entity";
+import { PhotographerxEvent } from "src/photographer/entities/photographerxevent.entity";
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

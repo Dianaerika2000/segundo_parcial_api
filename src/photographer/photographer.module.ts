@@ -4,7 +4,7 @@ import { PhotographerController } from './photographer.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Photographer } from './entities/photographer.entity';
 import { RolModule } from 'src/rol/rol.module';
-import { PhotographerxEvent } from './entities/PhotographerxEvent.entity';
+import { PhotographerxEvent } from './entities/photographerxevent.entity';
 
 @Module({
   imports: [

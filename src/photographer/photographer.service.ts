@@ -5,7 +5,7 @@ import { Photographer } from './entities/photographer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RolService } from 'src/rol/rol.service';
-import { PhotographerxEvent } from './entities/PhotographerxEvent.entity';
+import { PhotographerxEvent } from './entities/photographerxevent.entity';
 
 @Injectable()
 export class PhotographerService {

@@ -1,7 +1,7 @@
 import { Rol } from "src/rol/entities/rol.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { PhotographerxEvent } from "./PhotographerxEvent.entity";
+import { PhotographerxEvent } from "./photographerxevent.entity";
 
 @Entity()
 export class Photographer extends User {
