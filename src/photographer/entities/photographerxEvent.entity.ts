@@ -14,7 +14,7 @@ export class PhotographerEvent {
   @Column({default: false})
   state: boolean;
 
-  @ManyToOne(() =>  Photographer, (photographer) => photographer.photographerxEvents)
+  @ManyToOne(() =>  Photographer, (photographer) => photographer.photographerEvents)
   photographer: Photographer;
 
   @ManyToOne(() => Events, (event) => event.photographerxEvents)

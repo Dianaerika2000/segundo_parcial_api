@@ -12,7 +12,7 @@ export class Photographer extends User {
   @JoinColumn({ name: 'rol_id'})
   rol: Rol;
 
-  @OneToMany(() =>  PhotographerEvent, (photographerxEvent) => photographerxEvent.photographer)
-  photographerxEvents: PhotographerEvent[];
+  @OneToMany(() =>  PhotographerEvent, (photographerEvent) => photographerEvent.photographer)
+  photographerEvents: PhotographerEvent[];
 }
 
