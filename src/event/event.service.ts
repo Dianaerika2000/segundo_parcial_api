@@ -8,7 +8,7 @@ import { Events } from './entities/event.entity';
 import { MailService } from 'src/mail/mail.service';
 import { People } from './interfaces/people.interface';
 import { DataEvent } from './interfaces/event.interface';
-import { PhotographerEvent } from 'src/photographer/entities/photographerxevent.entity';
+import { PhotographerEvent } from '../photographer/entities/photographerxevent.entity';
 import { Photography } from './entities/image.entity';
 import { PhotographyDto } from './dto/photography.dto';
 import { AwsRekognitionService } from '../aws-rekognition/aws-rekognition.service';
