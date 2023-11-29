@@ -8,15 +8,23 @@ import { Repository } from 'typeorm';
 import { AwsRekognitionService } from '../aws-rekognition/aws-rekognition.service';
 import { QrService } from '../qr/qr.service';
 import { ConfigService } from '@nestjs/config';
+import { GuestxEvent } from './entities/guestxEvent.entity';
 
 @Injectable()
 export class GuestService {
   constructor(
     @InjectRepository(Guest)
     private  guestRepository: Repository<Guest>,
+
+    @InjectRepository(GuestxEvent)
+    private guestxEventRepository: Repository<GuestxEvent>,
+
     private readonly rolService: RolService,
+
     private awsRekognitionService: AwsRekognitionService,
+
     private readonly qrService: QrService,
+
     private readonly configService: ConfigService,
   ) {}
 
@@ -66,4 +74,23 @@ export class GuestService {
   remove(id: number) {
     return `This action removes a #${id} guest`;
   }
+
+  async acceptInvitation(guestId: number, eventId: number, countGuests: number) {
+    const guestxEvent = this.guestxEventRepository.create({
+      date: new Date(),
+      state: true,
+      countGuests,
+      guest: { id: guestId },
+      event: { id: eventId },
+    });
+
+    return await this.guestxEventRepository.save(guestxEvent);
+  }
+
+
+  async getInvitation(guestId: number, eventId: number){
+
+
+  }
+
 }

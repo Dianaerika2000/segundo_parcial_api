@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Photographer } from "./photographer.entity";
-import { Events } from "src/event/entities/event.entity";
-import { Photography } from "src/event/entities/image.entity";
+import { Events } from "../../event/entities/event.entity";
+import { Photography } from "../../event/entities/image.entity";
 
 @Entity('photographer_event')
 export class PhotographerxEvent {

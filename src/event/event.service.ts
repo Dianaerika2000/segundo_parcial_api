@@ -8,7 +8,10 @@ import { Events } from './entities/event.entity';
 import { MailService } from 'src/mail/mail.service';
 import { People } from './interfaces/people.interface';
 import { DataEvent } from './interfaces/event.interface';
-import { PhotographerxEvent } from 'src/photographer/entities/PhotographerxEvent.entity';
+import { PhotographerxEvent } from '../photographer/entities/photographerxEvent.entity';
+import { Photography } from './entities/image.entity';
+import { PhotographyDto } from './dto/photography.dto';
+import { AwsRekognitionService } from '../aws-rekognition/aws-rekognition.service';
 @Injectable()
 export class EventService {
   constructor(
@@ -17,10 +20,15 @@ export class EventService {
 
     @InjectRepository(PhotographerxEvent)
     private readonly photographerxEventRepository: Repository<PhotographerxEvent>,
-    
+
+    @InjectRepository(Photography)
+    private readonly photographyRepository: Repository<Photography>,
+
     private organizerService: OrganizerService,
     
     private mailService: MailService,
+
+    private awsRekognitionService: AwsRekognitionService,
   ) {}
 
   async create(createEventDto: CreateEventDto) {
@@ -95,7 +103,9 @@ export class EventService {
     return onlyPhotographers;
   }
 
-  async uploadImage(eventId: number, photographerId: number,  image: Express.Multer.File) {
+  async uploadImage(photographyDto: PhotographyDto,  image: Express.Multer.File) {
+    const { eventId, photographerId, ...data } = photographyDto;
+
     const photographerxEvent = await this.photographerxEventRepository.findOne({
       where: {
         event: { id: eventId },
@@ -107,10 +117,19 @@ export class EventService {
       throw new NotFoundException('Photographer not found');
     }
 
-    // photographerxEvent.photographies = image.filename;
-    await this.photographerxEventRepository.save(photographerxEvent);
+    //comparar la fotografia con los rostros almacenados en la collecion
+    const resultUsers = await this.awsRekognitionService.getUsersByPhotography(image.buffer);
 
-    return photographerxEvent;
+    const url = await this.awsRekognitionService.uploadPhotography(image.buffer, '1234');
+
+    const photography = this.photographyRepository.create({
+      ...data,
+      photographerxEvent
+    });
+
+    // photographerxEvent.photographies = image.filename;
+
+    return await this.photographyRepository.save(photography);
   }
 
 

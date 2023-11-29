@@ -99,7 +99,7 @@ export class AwsRekognitionService {
     };
   }
 
-  async getUsersByPhotography(photography: Buffer, collectionName: string) {
+  async getUsersByPhotography(photography: Buffer, collectionName: string = "evento_prueba") {
 
     // Connects to AWS Rekognition service
     const rekognitionClient = new RekognitionClient({

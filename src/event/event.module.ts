@@ -7,6 +7,7 @@ import { OrganizerModule } from 'src/organizer/organizer.module';
 import { MailModule } from 'src/mail/mail.module';
 import { PhotographerModule } from 'src/photographer/photographer.module';
 import { Photography } from './entities/image.entity';
+import { AwsRekognitionModule } from 'src/aws-rekognition/aws-rekognition.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { Photography } from './entities/image.entity';
     OrganizerModule,
     MailModule,
     PhotographerModule,
+    AwsRekognitionModule,
   ],
   controllers: [EventController],
   providers: [EventService],

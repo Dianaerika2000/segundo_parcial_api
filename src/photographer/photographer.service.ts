@@ -95,6 +95,12 @@ export class PhotographerService {
     return photographers;
   }
 
+  async uploadImage(eventId: number, ){
+
+  }
+
+
+
 
   
 }

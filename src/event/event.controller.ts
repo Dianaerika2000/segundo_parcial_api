@@ -49,6 +49,6 @@ export class EventController {
     @UploadedFile() photo: Express.Multer.File,
     @Param('eventId')eventId: number,
     @Param('photographerId')photographerId: number,) {
-    return this.eventService.uploadImage(eventId, photographerId, photo);
+    // return this.eventService.uploadImage(eventId, photographerId, photo);//arreglar
   }
 }
