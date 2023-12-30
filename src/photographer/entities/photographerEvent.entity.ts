@@ -17,9 +17,9 @@ export class PhotographerEvent {
   @ManyToOne(() =>  Photographer, (photographer) => photographer.photographerEvents)
   photographer: Photographer;
 
-  @ManyToOne(() => Events, (event) => event.photographerxEvents)
+  @ManyToOne(() => Events, (event) => event.photographerEvents)
   event: Events;
 
-  @OneToMany(() => Photography, (photography) => photography.photographerxEvent)
+  @OneToMany(() => Photography, (photography) => photography.photographerEvent)
   photographies: Photography[];
 }
