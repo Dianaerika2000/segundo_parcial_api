@@ -27,7 +27,7 @@ export class AuthService {
     return {
       id: organizer.id,
       email: organizer.email,
-      token: this.getJwtToken({ email }),
+      // token: this.getJwtToken({ email }),
     };
   }
 

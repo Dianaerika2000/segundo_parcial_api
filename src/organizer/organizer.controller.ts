@@ -22,7 +22,7 @@ export class OrganizerController {
     return this.organizerService.findOne(id);
   }
   
-  @Get(':id/email')
+  @Get(':email/email')
   findOneByEmail(@Param('email') email: string) {
     return this.organizerService.findOneByEmail(email);
   }
