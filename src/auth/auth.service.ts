@@ -54,8 +54,7 @@ export class AuthService {
     }
 
     return {
-      id: guest.id,
-      email: guest.email,
+      ...guest,
       token: this.getJwtToken({ email }),
     };
   }
