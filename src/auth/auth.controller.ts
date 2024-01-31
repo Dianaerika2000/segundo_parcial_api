@@ -9,8 +9,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('organizer/signin')
-  signInOrganizer( @Body() signInDto: SignInDto ) {
-    return this.authService.signInOrganizer(signInDto);
+  async signInOrganizer( @Body() signInDto: SignInDto ) {
+    return await this.authService.signInOrganizer(signInDto);
   }
 
   @Post('photographer/signin')

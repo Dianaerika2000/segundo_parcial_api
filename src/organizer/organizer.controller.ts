@@ -21,6 +21,11 @@ export class OrganizerController {
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.organizerService.findOne(id);
   }
+  
+  @Get(':id/email')
+  findOneByEmail(@Param('email') email: string) {
+    return this.organizerService.findOneByEmail(email);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrganizerDto: UpdateOrganizerDto) {
