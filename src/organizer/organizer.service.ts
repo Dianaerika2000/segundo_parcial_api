@@ -41,6 +41,16 @@ export class OrganizerService {
     return organizer;
   }
 
+  async findOneByEmail(email: string) {
+    const organizer = await this.organizerRepository.findOneBy({ email: email });
+    
+    if (!organizer) {
+      throw new NotFoundException(`Organizer with ID ${email} not found`);
+    }
+
+    return organizer;
+  }
+
   update(id: number, updateOrganizerDto: UpdateOrganizerDto) {
     return `This action updates a #${id} organizer`;
   }

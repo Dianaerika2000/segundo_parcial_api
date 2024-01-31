@@ -12,6 +12,7 @@ import { PhotographerModule } from './photographer/photographer.module';
 import { AwsRekognitionModule } from './aws-rekognition/aws-rekognition.module';
 import { GuestModule } from './guest/guest.module';
 import { QrModule } from './qr/qr.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { QrModule } from './qr/qr.module';
     AwsRekognitionModule,
     GuestModule,
     QrModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

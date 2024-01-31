@@ -43,6 +43,14 @@ export class PhotographerService {
     return photographer;
   }
 
+  async findOneByEmail(email: string) {
+    const photographer = await this.photographerRepository.findOneBy({ email });
+    if (!photographer) {
+      throw new NotFoundException(`Photographer with ID ${email} not found`);
+    }
+    return photographer;
+  }
+
   update(id: number, updatePhotographerDto: UpdatePhotographerDto) {
     return `This action updates a #${id} photographer`;
   }
