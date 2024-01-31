@@ -32,8 +32,8 @@ export class GuestService {
     const { rolId, eventId } = createGuestDto;
     const rol = await this.rolService.findOne(rolId);
 
-    // const collectionName = `evento_${eventId}`;
-    const indexFaceResult = await this.awsRekognitionService.indexFaceToCollection(file.buffer);
+    const collectionName = this.configService.get('AWS_REKOGNITION_COLLECTION_NAME');
+    const indexFaceResult = await this.awsRekognitionService.indexFaceToCollection(file.buffer, collectionName);
     
     if (indexFaceResult.error) {
       throw new BadRequestException('Error indexing face');
@@ -100,5 +100,27 @@ export class GuestService {
 
 
   }
+
+  async getEventsForGuest(guestId: number): Promise<GuestxEvent[]> {
+    const events = await this.guestxEventRepository.find({
+      where: {
+        guest: { id: guestId },
+      },
+      relations: ['event'],
+    });
+
+    return events;
+  }
+
+  // async getEventsForPhotographer(photographerId: number): Promise<PhotographerEvent[]> {
+  //   const events = await this.photographerxEventRepository.find({
+  //     where: {
+  //       photographer: { id: photographerId },
+  //     },
+  //     relations: ['event'],
+  //   });
+  
+  //   return events;
+  // }
 
 }

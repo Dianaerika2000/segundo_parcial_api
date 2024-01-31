@@ -35,4 +35,18 @@ export class GuestController {
   remove(@Param('id') id: string) {
     return this.guestService.remove(+id);
   }
+
+  @Post(':id/accept-invitation/event/:eventId')
+  aceptInvitation(
+    @Param('id') guestId: number,
+    @Param('eventId') eventId: number,
+    @Body('countGuests') countGuests: number
+    ) {
+    return this.guestService.acceptInvitation(guestId, eventId, countGuests);
+  }
+
+  @Get(':id/events')
+  getEventsForGuest(@Param('id') id: number) {
+    return this.guestService.getEventsForGuest(id);
+  }
 }
