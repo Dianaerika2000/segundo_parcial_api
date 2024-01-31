@@ -24,8 +24,10 @@ export class AuthService {
     if (organizer?.password !== password) {
       throw new UnauthorizedException();
     }
-    // 
-    return "Organizer signed in successfully!"
+    return {
+      email: organizer.email,
+      token: this.getJwtToken({ email }),
+    };
   }
 
   async signInPhotographer(signInDto:SignInDto): Promise<any> {
