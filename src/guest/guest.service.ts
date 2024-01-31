@@ -49,13 +49,13 @@ export class GuestService {
     const domainFront = this.configService.get('FRONTEND_DOMAIN');
     const url = `${domainFront}/event/invitation`;
     
-    const qrInvitacion = await this.qrService.generateQrCode(url)
+    // const qrInvitacion = await this.qrService.generateQrCode(url)
 
     await this.guestRepository.save(guest);
     
     return {
       ...guest,
-      qrInvitacion
+      // qrInvitacion
     }
   }
 
@@ -65,6 +65,14 @@ export class GuestService {
 
   findOne(id: number) {
     return `This action returns a #${id} guest`;
+  }
+
+  async findOneByEmail(email: string) {
+    const guest = await this.guestRepository.findOneBy({ email });
+    if (!guest) {
+      throw new BadRequestException(`Guest with email ${email} not found`);
+    }
+    return guest;
   }
 
   update(id: number, updateGuestDto: UpdateGuestDto) {

@@ -20,5 +20,6 @@ import { QrModule } from 'src/qr/qr.module';
   ],
   controllers: [GuestController],
   providers: [GuestService],
+  exports: [GuestService]
 })
 export class GuestModule {}

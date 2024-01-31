@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PhotographerModule } from 'src/photographer/photographer.module';
 import { OrganizerModule } from 'src/organizer/organizer.module';
+import { GuestModule } from 'src/guest/guest.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { OrganizerModule } from 'src/organizer/organizer.module';
     }),
     PhotographerModule,
     OrganizerModule,
+    GuestModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

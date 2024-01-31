@@ -6,6 +6,7 @@ import { OrganizerService } from '../organizer/organizer.service';
 import { PhotographerService } from '../photographer/photographer.service';
 import { CreateOrganizerDto } from 'src/organizer/dto/create-organizer.dto';
 import { CreatePhotographerDto } from 'src/photographer/dto/create-photographer.dto';
+import { GuestService } from '../guest/guest.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly organizerService: OrganizerService,
     private readonly photographerService: PhotographerService,
+    private readonly guestService: GuestService
   ){}
 
   async signInOrganizer(signInDto:SignInDto): Promise<any> {
@@ -39,6 +41,21 @@ export class AuthService {
     return {
       id: photographer.id,
       email: photographer.email,
+      token: this.getJwtToken({ email }),
+    };
+  }
+
+  async signInGuest(SignInDto: SignInDto){
+    const { email, password } = SignInDto;
+    const guest = await this.guestService.findOneByEmail(email);
+
+    if (guest?.password !== password) {
+      throw new UnauthorizedException();
+    }
+
+    return {
+      id: guest.id,
+      email: guest.email,
       token: this.getJwtToken({ email }),
     };
   }
