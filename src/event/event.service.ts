@@ -12,6 +12,8 @@ import { PhotographerEvent } from 'src/photographer/entities/photographerEvent.e
 import { Photography } from './entities/image.entity';
 import { PhotographyDto } from './dto/photography.dto';
 import { AwsRekognitionService } from '../aws-rekognition/aws-rekognition.service';
+import { Invitation } from './entities/invitation.entity';
+import { PhotographerService } from 'src/photographer/photographer.service';
 @Injectable()
 export class EventService {
   constructor(
@@ -24,18 +26,25 @@ export class EventService {
     @InjectRepository(Photography)
     private readonly photographyRepository: Repository<Photography>,
 
+    @InjectRepository(Invitation)
+    private readonly invitationRepository: Repository<Invitation>,
+
     private organizerService: OrganizerService,
     
     private mailService: MailService,
 
     private awsRekognitionService: AwsRekognitionService,
+
+    private phothographerService: PhotographerService,
   ) {}
 
   async create(createEventDto: CreateEventDto) {
-    const { organizerId, people, ...eventData } = createEventDto;
+    const { organizerId, people, photographerEmail, ...eventData } = createEventDto;
   
     const organizer = await this.organizerService.findOne(organizerId);
-  
+
+    const photographer = await this.phothographerService.findOneByEmail(photographerEmail);
+    
     const event = this.eventRepository.create({
       ...eventData, 
       organizer: organizer, 
@@ -44,7 +53,17 @@ export class EventService {
     await this.eventRepository.save(event);
 
     await this.sendInvitationToPeople(people, event);
-    
+
+    await this.mailService.sendInvitationPhotographer(photographerEmail, 2, event);
+
+    const invitation = this.invitationRepository.create({
+      organizer_id: organizerId,
+      photographer_id: photographer.id,
+      event_id: event.id,
+    });
+
+    await this.invitationRepository.save(invitation);
+
     return {
       message: 'Event created successfully',
       ...event,
@@ -138,6 +157,14 @@ export class EventService {
     return await this.photographyRepository.save(photography);
   }
 
+  async getPhotographerInvitations(photographerId: number) {
+
+    const invitations = await this.invitationRepository.createQueryBuilder('invitation')
+      .where('invitation.photographer_id = :photographerId', { photographerId })
+      .getMany();
+
+    return invitations;
+  }
 
 
   

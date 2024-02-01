@@ -28,6 +28,9 @@ export class CreateEventDto {
   @IsNumber()
   organizerId: number;
 
+  @IsEmail()
+  photographerEmail: string;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => People)

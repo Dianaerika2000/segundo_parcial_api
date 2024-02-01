@@ -35,6 +35,28 @@ export class MailService {
       },
     });
   }
+
+  async sendInvitationPhotographer(email: string, cant: number, event: Events) {
+    const frontendDomain = this.configService.get('FRONTEND_DOMAIN');
+    const url = `${frontendDomain}/event/${event.id}/invited?email=${email}/cant=${cant}`;
+
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Invitación para cubrir un evento',
+      template: './invitation',
+      context: {
+        event: event.name,
+        description: event.description,
+        date: event.date,
+        time: event.time,
+        cant: cant,
+        address: event.address,
+        guess: email,
+        organizer: event.organizer.name,
+        url: url,
+      },
+    });
+  }
   
   async sendInviteMail(email: string, cant: number, event: DataEvent) {
     const frontendDomain = this.configService.get('FRONTEND_DOMAIN');

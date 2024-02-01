@@ -46,7 +46,7 @@ export class PhotographerService {
   async findOneByEmail(email: string) {
     const photographer = await this.photographerRepository.findOneBy({ email });
     if (!photographer) {
-      throw new NotFoundException(`Photographer with ID ${email} not found`);
+      throw new NotFoundException(`Photographer with email ${email} not found`);
     }
     return photographer;
   }

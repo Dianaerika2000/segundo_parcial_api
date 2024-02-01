@@ -45,7 +45,7 @@ export class OrganizerService {
     const organizer = await this.organizerRepository.findOneBy({ email: email });
     
     if (!organizer) {
-      throw new NotFoundException(`Organizer with ID ${email} not found`);
+      throw new NotFoundException(`Organizer with email ${email} not found`);
     }
 
     return organizer;
