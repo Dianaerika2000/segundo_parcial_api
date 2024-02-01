@@ -51,4 +51,9 @@ export class EventController {
     @Param('photographerId')photographerId: number,) {
     // return this.eventService.uploadImage(eventId, photographerId, photo);//arreglar
   }
+
+  @Get('/invitation/photographer/:photographerId')
+  getPhotographerInvitations(@Param('photographerId') photographerId: number) {
+    return this.eventService.getPhotographerInvitations(photographerId);
+  }
 }

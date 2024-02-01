@@ -30,7 +30,7 @@ export class EventService {
     private readonly invitationRepository: Repository<Invitation>,
 
     private organizerService: OrganizerService,
-    
+
     private mailService: MailService,
 
     private awsRekognitionService: AwsRekognitionService,
@@ -39,22 +39,28 @@ export class EventService {
   ) {}
 
   async create(createEventDto: CreateEventDto) {
-    const { organizerId, people, photographerEmail, ...eventData } = createEventDto;
-  
+    const { organizerId, people, photographerEmail, ...eventData } =
+      createEventDto;
+
     const organizer = await this.organizerService.findOne(organizerId);
 
-    const photographer = await this.phothographerService.findOneByEmail(photographerEmail);
-    
+    const photographer =
+      await this.phothographerService.findOneByEmail(photographerEmail);
+
     const event = this.eventRepository.create({
-      ...eventData, 
-      organizer: organizer, 
+      ...eventData,
+      organizer: organizer,
     });
 
     await this.eventRepository.save(event);
 
     await this.sendInvitationToPeople(people, event);
 
-    await this.mailService.sendInvitationPhotographer(photographerEmail, 2, event);
+    await this.mailService.sendInvitationPhotographer(
+      photographerEmail,
+      2,
+      event,
+    );
 
     const invitation = this.invitationRepository.create({
       organizer_id: organizerId,
@@ -74,14 +80,14 @@ export class EventService {
   async getEventsForOrganizer(organizerId: number): Promise<Events[]> {
     const organizer = await this.organizerService.findOne(organizerId);
     console.log('Organizer:', organizer);
-  
+
     const events = await this.eventRepository.find({
       where: {
-        organizer: { id: organizer.id },  // Asumiendo que `id` es la clave primaria de Organizer
+        organizer: { id: organizer.id }, // Asumiendo que `id` es la clave primaria de Organizer
       },
     });
     console.log('Events:', events);
-  
+
     return events;
   }
 
@@ -90,7 +96,7 @@ export class EventService {
   }
 
   async findOne(id: number) {
-    const event = await this.eventRepository.findOneBy({id: id});
+    const event = await this.eventRepository.findOneBy({ id: id });
 
     if (!event) {
       throw new NotFoundException('Event not found');
@@ -107,10 +113,10 @@ export class EventService {
     return `This action removes a #${id} event`;
   }
 
-  private async sendInvitationToPeople(people: People[], event : Events){
+  private async sendInvitationToPeople(people: People[], event: Events) {
     people.map((person) => {
       this.mailService.sendInvitation(person.email, person.cant, event);
-    })
+    });
   }
 
   async getPhotographersForEvent(eventId: number): Promise<any[]> {
@@ -122,13 +128,16 @@ export class EventService {
     });
 
     const onlyPhotographers = photographers.map((photographer) => {
-      return photographer.photographer
+      return photographer.photographer;
     });
 
     return onlyPhotographers;
   }
 
-  async uploadImage(photographyDto: PhotographyDto,  image: Express.Multer.File) {
+  async uploadImage(
+    photographyDto: PhotographyDto,
+    image: Express.Multer.File,
+  ) {
     const { eventId, photographerId, ...data } = photographyDto;
 
     const photographerxEvent = await this.photographerxEventRepository.findOne({
@@ -143,13 +152,18 @@ export class EventService {
     }
 
     //comparar la fotografia con los rostros almacenados en la collecion
-    const resultUsers = await this.awsRekognitionService.getUsersByPhotography(image.buffer);
+    const resultUsers = await this.awsRekognitionService.getUsersByPhotography(
+      image.buffer,
+    );
 
-    const url = await this.awsRekognitionService.uploadPhotography(image.buffer, '1234');
+    const url = await this.awsRekognitionService.uploadPhotography(
+      image.buffer,
+      '1234',
+    );
 
     const photography = this.photographyRepository.create({
       ...data,
-      photographerEvent:photographerxEvent,
+      photographerEvent: photographerxEvent,
     });
 
     // photographerxEvent.photographies = image.filename;
@@ -158,16 +172,26 @@ export class EventService {
   }
 
   async getPhotographerInvitations(photographerId: number) {
-
-    const invitations = await this.invitationRepository.createQueryBuilder('invitation')
+    const invitations = await this.invitationRepository
+      .createQueryBuilder('invitation')
       .where('invitation.photographer_id = :photographerId', { photographerId })
       .getMany();
 
-    return invitations;
+    const events = await Promise.all(
+      invitations.map(async (invitation) => {
+        const event = await this.findOne(invitation.event_id);
+
+        // Extraer solo la información necesaria del evento (nombre y organizador)
+        return {
+          eventId: event.id,
+          eventName: event.name,
+          date: event.date,
+          time: event.time,
+          organizer: event.organizer?.name,
+          phtographerId: photographerId,
+        };
+      }),
+    );
+    return events;
   }
-
-
-  
-  
-
 }
